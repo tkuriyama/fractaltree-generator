@@ -12,10 +12,12 @@ import Element.Input as Input
 import FractalTreeGenerator.Types exposing (..)
 import Html exposing (Html)
 import Random
-import TypedSvg exposing (g, line, svg)
+import TypedSvg exposing (g, line, polygon, svg)
 import TypedSvg.Attributes
     exposing
         ( class
+        , fill
+        , points
         , stroke
         , transform
         , viewBox
@@ -99,7 +101,7 @@ controls model =
                 "Base Width"
             , floatSlider
                 UpdateWidthNarrowing
-                ( 0.5, 0.85 )
+                ( 0.75, 0.95 )
                 model.widthNarrowing
                 "Width Change %"
             , randomizeChoice
@@ -113,7 +115,7 @@ controls model =
                 "Base Height"
             , floatSlider
                 UpdateHeightShortening
-                ( 0.5, 0.85 )
+                ( 0.5, 1.2 )
                 model.heightShortening
                 "Height Change %"
             , randomizeChoice
@@ -264,8 +266,11 @@ renderBranches model level ( x, y ) ( w, h ) angle =
         ( x_, y_ ) =
             extend ( x, y ) h angle
 
+        ( x_2, y_2 ) =
+            extend ( x, y ) (h * (1 + (1 - model.heightShortening))) angle
+
         branch =
-            renderBranch level ( x, y ) ( x_, y_ ) w
+            renderBranch level ( x, y ) ( x_2, y_2 ) w angle
     in
     if level == 0 then
         Random.constant [ svg [] [] ]
@@ -280,17 +285,26 @@ renderBranches model level ( x, y ) ( w, h ) angle =
                 (\branches -> Random.constant (branch :: branches))
 
 
-renderBranch : Int -> ( Float, Float ) -> ( Float, Float ) -> Float -> Svg Msg
-renderBranch level ( x, y ) ( x_, y_ ) w =
-    line
-        [ x1 x_
-        , y1 y_
-        , x2 x
-        , y2 y
-        , strokeWidth w
-        , stroke <| Paint <| branchColor level
-        ]
-        []
+renderBranch :
+    Int
+    -> ( Float, Float )
+    -> ( Float, Float )
+    -> Float
+    -> Float
+    -> Svg Msg
+renderBranch level ( x, y ) ( x_, y_ ) w angle =
+    g
+      []
+      [ line
+            [ x1 x_
+            , y1 y_
+            , x2 x
+            , y2 y
+            , strokeWidth w
+            , stroke <| Paint <| branchColor level
+            ]
+            []
+      ]
 
 
 renderNextBranches :
@@ -330,7 +344,7 @@ extend ( x, y ) h angle =
 
 branchColor : Int -> Color
 branchColor x =
-    Color.rgb255 0 (255 / toFloat x |> round) 0
+    Color.rgb255 0 (50 + (205 / toFloat x |> round)) 0
 
 
 
