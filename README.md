@@ -1,10 +1,12 @@
 # Treemap Generator
 
-An interactive generator for squarified treemaps.
+An interactive generator for simple fractal trees, with options to tweak parameters and add noise.
+
+Brier write-up [here](https://tkuriyama.github.io/art/2021/05/01/Fractal-Tree-Generator.html).
 
 ## Live Version
 
-[https://tarokuriyama.com/treemap](https://tarokuriyama.com/treemap)
+[https://tarokuriyama.com/fractaltree](https://tarokuriyama.com/fractaltree)
 
 ## Build
 
