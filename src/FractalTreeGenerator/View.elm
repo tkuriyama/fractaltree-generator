@@ -115,7 +115,7 @@ controls model =
                 "Base Height"
             , floatSlider
                 UpdateHeightShortening
-                ( 0.5, 1.2 )
+                ( 0.5, 1.0 )
                 model.heightShortening
                 "Height Change %"
             , randomizeChoice
@@ -294,8 +294,8 @@ renderBranch :
     -> Svg Msg
 renderBranch level ( x, y ) ( x_, y_ ) w angle =
     g
-      []
-      [ line
+        []
+        [ line
             [ x1 x_
             , y1 y_
             , x2 x
@@ -304,7 +304,7 @@ renderBranch level ( x, y ) ( x_, y_ ) w angle =
             , stroke <| Paint <| branchColor level
             ]
             []
-      ]
+        ]
 
 
 renderNextBranches :
